@@ -5,12 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListaProdutosComponent } from './lista-produtos/lista-produtos.component';
 import { FooterComponent } from './footer/footer.component';
 import { ProdutosService } from './produtos.service';
 import { NovoProdutoComponent } from './novo-produto/novo-produto.component';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+defineLocale('pt-br', ptBrLocale); 
 
 @NgModule({
   declarations: [
@@ -26,7 +30,8 @@ import { NovoProdutoComponent } from './novo-produto/novo-produto.component';
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    BsDatepickerModule.forRoot()
   ],
   providers: [ProdutosService],
   bootstrap: [AppComponent]
