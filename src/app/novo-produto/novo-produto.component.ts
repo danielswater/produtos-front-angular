@@ -16,6 +16,7 @@ export class NovoProdutoComponent implements OnInit {
   locales = listLocales();
 
   form: FormGroup
+  selectedFile: File
 
   constructor(private fb: FormBuilder, private _localeService: BsLocaleService, private service: ProdutosService){
     this._localeService.use(this.locale);
@@ -37,13 +38,29 @@ export class NovoProdutoComponent implements OnInit {
     this.form.get('data_validade')?.setValue(dataFormatada);
   }
 
+  onFileChange(event:any){
+    this.selectedFile = event.target.files[0];
+    // console.log(event)
+    // const reader = new FileReader()
+    // if(event.target.files && event.target.files.length){
+    //   const [file] = event.target.files
+    //   reader.readAsDataURL(file);
+    //   reader.onload = () => {
+    //     this.imageSrc = reader.result as string
+    //     this.form.patchValue({
+    //       imagem: reader.result
+    //     })
+    //   }
+    // }
+  }
+
   onSubmit(){
     const formData = new FormData()
     formData.append('nome', this.form.controls['nome'].value)
     formData.append('descricao', this.form.controls['descricao'].value)
     formData.append('preco', this.form.controls['preco'].value)
     formData.append('data_validade', this.form.controls['data_validade'].value)
-    //formData.append('imagem', this.form.controls['imagem'].value)
+    formData.append('imagem', this.selectedFile, this.selectedFile.name)
     this.service.postProdutos(formData).subscribe(data =>{
       console.log('POST', data)
     })

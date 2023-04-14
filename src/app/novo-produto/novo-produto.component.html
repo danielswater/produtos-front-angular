@@ -31,7 +31,7 @@
 
                 <div class="form-group">
                     <label for="data_cadastro">Imagem</label>
-                    <input type="file" class="form-control">
+                    <input (change)="onFileChange($event)" type="file" class="form-control">
                 </div>
 
                 <div style="float: right;">
