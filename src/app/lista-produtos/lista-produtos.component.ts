@@ -23,4 +23,12 @@ export class ListaProdutosComponent implements OnInit {
     })
   }
 
+  excluir(id: number){
+    console.log('excluir', id)
+  }
+
+  editar(id: number){
+    console.log('editar', id)
+  }
+
 }

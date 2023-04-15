@@ -4,15 +4,15 @@ import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { listLocales } from 'ngx-bootstrap/chronos';
 import { format } from 'date-fns';
 import { map } from 'rxjs/operators';
-import { ProdutosService } from './../produtos.service';
-import { ProdutoResponse } from './../interface/produto.interface';
+import { ProdutosService } from '../produtos.service';
+import { ProdutoResponse } from '../interface/produto.interface';
 
 @Component({
   selector: 'app-novo-produto',
-  templateUrl: './novo-produto.component.html',
-  styleUrls: ['./novo-produto.component.scss']
+  templateUrl: './produto.component.html',
+  styleUrls: ['./produto.component.scss']
 })
-export class NovoProdutoComponent implements OnInit {
+export class ProdutoComponent implements OnInit {
 
   locale = 'pt-br';
   locales = listLocales();

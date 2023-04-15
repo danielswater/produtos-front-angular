@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ListaProdutosComponent } from './lista-produtos/lista-produtos.component';
 import { FooterComponent } from './footer/footer.component';
 import { ProdutosService } from './produtos.service';
-import { NovoProdutoComponent } from './novo-produto/novo-produto.component';
+import { ProdutoComponent } from './produto/produto.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { RealBrDirective } from './diretiva/real-br.directive';
@@ -25,7 +25,7 @@ defineLocale('pt-br', ptBrLocale);
     HeaderComponent,
     ListaProdutosComponent,
     FooterComponent,
-    NovoProdutoComponent,
+    ProdutoComponent,
     RealBrDirective
   ],
   imports: [
