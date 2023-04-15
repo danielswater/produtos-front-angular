@@ -21,4 +21,12 @@ export class ProdutosService {
   postProdutos(produtos: any){
     return this.http.post(this.API+'add-produtos', produtos)
   }
+
+  getProdutoById(id: number){
+    return this.http.get(this.API+'detalhe-produto/'+id)
+  }
+
+  deleteProduto(id:number){
+    return this.http.get(this.API+'delete-produtos/'+id)
+  }
 }

@@ -14,6 +14,9 @@ import { ProdutosService } from './produtos.service';
 import { NovoProdutoComponent } from './novo-produto/novo-produto.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
+import { RealBrDirective } from './diretiva/real-br.directive';
+
+
 defineLocale('pt-br', ptBrLocale); 
 
 @NgModule({
@@ -22,7 +25,8 @@ defineLocale('pt-br', ptBrLocale);
     HeaderComponent,
     ListaProdutosComponent,
     FooterComponent,
-    NovoProdutoComponent
+    NovoProdutoComponent,
+    RealBrDirective
   ],
   imports: [
     HttpClientModule,
