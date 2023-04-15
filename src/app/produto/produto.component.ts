@@ -4,6 +4,7 @@ import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { listLocales } from 'ngx-bootstrap/chronos';
 import { format } from 'date-fns';
 import { map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import { ProdutosService } from '../produtos.service';
 import { ProdutoResponse } from '../interface/produto.interface';
 
@@ -16,15 +17,27 @@ export class ProdutoComponent implements OnInit {
 
   locale = 'pt-br';
   locales = listLocales();
+  id: number
 
   form: FormGroup
   selectedFile: File
 
-  constructor(private fb: FormBuilder, private _localeService: BsLocaleService, private service: ProdutosService) {
+  constructor(
+    private fb: FormBuilder,
+    private _localeService: BsLocaleService,
+    private route: ActivatedRoute,
+    private service: ProdutosService) {
+      if(route.snapshot.params['id']){
+        this.id = route.snapshot.params['id'];
+      }
+    
     this._localeService.use(this.locale);
   }
 
   ngOnInit(): void {
+    if(this.id){
+      this.getProduto(this.id)
+    }
     this.form = this.fb.group({
       nome: ['', Validators.required],
       descricao: ['', Validators.required],
@@ -65,5 +78,11 @@ export class ProdutoComponent implements OnInit {
           this.form.reset()
         }
       });
+  }
+
+  getProduto(id: number) {
+    this.service.getProdutoById(id).subscribe(data => {
+      console.log('data', data)
+    })
   }
 }
