@@ -27,7 +27,7 @@ export class ProdutosService {
   }
 
   deleteProduto(id:number){
-    return this.http.get(this.API+'delete-produtos/'+id)
+    return this.http.delete(this.API+'delete-produtos/'+id)
   }
 
   updateProduto(id:number, produtos:any){

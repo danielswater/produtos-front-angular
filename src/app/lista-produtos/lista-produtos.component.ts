@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProdutosService } from './../produtos.service';
+import { ProdutoResponse, Produto } from '../interface/produto.interface';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -19,12 +21,25 @@ export class ListaProdutosComponent implements OnInit {
   getListaProdutos(){
     this.service.getProdutos().subscribe(data =>{
       this.produtos = data
-      console.log(this.produtos)
     })
   }
 
   excluir(id: number){
-    console.log('excluir', id)
+    this.service.deleteProduto(id)
+    .pipe(
+      map((data: any) => {
+        return {
+          mensagem: data.mensagem,
+          status: data.status
+        } as ProdutoResponse;
+      })
+    )
+    .subscribe((response: ProdutoResponse) => {
+      console.log('response', response)
+      if (response.status == 'sucesso') {
+        //this.form.reset()
+      }
+    });
   }
 
   editar(id: number){

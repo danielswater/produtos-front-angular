@@ -144,8 +144,20 @@ export class ProdutoComponent implements OnInit {
       formData.append('imagem', this.selectedFile, this.selectedFile.name)
     }
     
-    this.service.updateProduto(this.id, formData).subscribe(data => {
-      console.log('update', data)
-    })
+    this.service.updateProduto(this.id, formData)
+    .pipe(
+      map((data: any) => {
+        return {
+          mensagem: data.mensagem,
+          status: data.status
+        } as ProdutoResponse;
+      })
+    )
+    .subscribe((response: ProdutoResponse) => {
+      console.log('response', response)
+      if (response.status == 'sucesso') {
+        //this.form.reset()
+      }
+    });
   }
 }
