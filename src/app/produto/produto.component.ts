@@ -19,7 +19,7 @@ export class ProdutoComponent implements OnInit {
   locale = 'pt-br';
   locales = listLocales();
   id: number
-  thumb: boolean
+  thumb: string
   dataValidade: Date | null;
   form: FormGroup
   data_cadastro: any
@@ -72,8 +72,9 @@ export class ProdutoComponent implements OnInit {
     formData.append('descricao', this.form.controls['descricao'].value)
     formData.append('preco', this.form.controls['preco'].value)
     formData.append('data_validade', this.form.controls['data_validade'].value)
-    formData.append('imagem', this.selectedFile, this.selectedFile.name)
-
+    if(this.selectedFile?.name){
+      formData.append('imagem', this.selectedFile, this.selectedFile.name)
+    }
     if (!this.id) {
       this.service.postProdutos(formData)
         .pipe(
@@ -110,6 +111,7 @@ export class ProdutoComponent implements OnInit {
       )
       .subscribe((response: Produto) => {
         if (response) {
+          this.thumb = response.imagem
           const stringData = response.data_validade;
           const data = this.datePipe.transform(stringData, 'yyyy-MM-dd');
           this.data_cadastro = response.data_cadastro
