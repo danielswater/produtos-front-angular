@@ -8,6 +8,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import { ListaProdutosComponent } from './lista-produtos/lista-produtos.component';
 import { FooterComponent } from './footer/footer.component';
 import { ProdutosService } from './produtos.service';
@@ -37,7 +38,7 @@ defineLocale('pt-br', ptBrLocale);
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot()
   ],
-  providers: [ProdutosService],
+  providers: [DatePipe,ProdutosService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
