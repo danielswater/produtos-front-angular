@@ -167,8 +167,7 @@ export class ProdutoComponent implements OnInit {
 
     if(dateString.includes('/')){
       let data = dateString.split('/').reverse()
-      console.log(data)
-      dateString = data[0] + '-' + data[1] + '-' + data[2]
+      dateString = `${data[0]}-${data[1]}-${data[2]}`
     }
 
     let dataDoBanco = dateString;
