@@ -114,8 +114,8 @@ export class ProdutoComponent implements OnInit {
         if (response) {
           this.thumb = response.imagem
           console.log('data cadastro', response.data_cadastro)
-          const stringData = response.data_cadastro;
-          const data = this.datePipe.transform(stringData, 'yyyy-MM-dd');
+          // const stringData = response.data_cadastro;
+          // const data = this.datePipe.transform(stringData, 'yyyy-MM-dd');
 
           this.data_cadastro = this.formatarDataBr(response.data_cadastro)
 
@@ -162,6 +162,15 @@ export class ProdutoComponent implements OnInit {
   }
 
   formatarDataBr(dateString: string) {
+
+    console.log('dateString', dateString)
+
+    if(dateString.includes('/')){
+      let data = dateString.split('/').reverse()
+      console.log(data)
+      dateString = data[0] + '-' + data[1] + '-' + data[2]
+    }
+
     let dataDoBanco = dateString;
     let dataDoUsuario = new Date(dataDoBanco + 'T00:00:00');
     let dataComFusoHorario = new Date(dataDoUsuario.getTime() + dataDoUsuario.getTimezoneOffset() * 60000);
@@ -171,23 +180,13 @@ export class ProdutoComponent implements OnInit {
     const ano = dataComFusoHorario.getFullYear().toString();
 
     return `${dia}/${mes}/${ano}`;
-
-    // const dataDoBanco = dateString
-    // let dataCadastro = moment.utc(dataDoBanco).local().toDate();
-    // return dataCadastro
-
-    // const date = new Date(dateString);
-    // const year = date.getFullYear();
-    // const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    // const day = date.getDate().toString().padStart(2, '0');
-    // return `${day}/${month}/${year}`;
   }
 
   formatarDataUSA(dateString: string) {
     const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${year}/${month}/${day}`;
+    const ano = date.getFullYear();
+    const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+    const dia = date.getDate().toString().padStart(2, '0');
+    return `${ano}/${mes}/${dia}`;
   }
 }
