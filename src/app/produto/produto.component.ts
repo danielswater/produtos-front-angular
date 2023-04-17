@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ProdutosService } from '../produtos.service';
 import { ProdutoResponse, Produto } from '../interface/produto.interface';
 
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-novo-produto',
   templateUrl: './produto.component.html',
@@ -20,7 +22,8 @@ export class ProdutoComponent implements OnInit {
   locales = listLocales();
   id: number
   thumb: string
-  dataValidade: Date | null;
+  //dataValidade: Date | null;
+  dataValidade: any
   form: FormGroup
   data_cadastro: any
   selectedFile: File
@@ -52,27 +55,25 @@ export class ProdutoComponent implements OnInit {
     })
   }
 
-  formatarData() {
-    const data = this.form.get('data_validade')?.value;
-    const dataFormatada = format(data, 'yyyy-MM-dd');
-    this.form.get('data_validade')?.setValue(dataFormatada);
-  }
-
   onFileChange(event: any) {
     this.selectedFile = event.target.files[0];
   }
 
   onSubmit() {
 
-    const dataValidade = this.form.get('data_validade')?.value;
-    const dataValidadeFormatada = format(dataValidade, 'yyyy-MM-dd');
-    this.form.get('data_validade')?.setValue(dataValidadeFormatada);
+    // const dataValidade = this.form.get('data_validade')?.value;
+    // const dataValidadeFormatada = format(dataValidade, 'yyyy-MM-dd');
+    // this.form.get('data_validade')?.setValue(dataValidadeFormatada);
+
+    this.dataValidade = this.formatarDataUSA(this.form.controls['data_validade'].value)
+
+
     const formData = new FormData()
     formData.append('nome', this.form.controls['nome'].value)
     formData.append('descricao', this.form.controls['descricao'].value)
     formData.append('preco', this.form.controls['preco'].value)
-    formData.append('data_validade', this.form.controls['data_validade'].value)
-    if(this.selectedFile?.name){
+    formData.append('data_validade', this.dataValidade)
+    if (this.selectedFile?.name) {
       formData.append('imagem', this.selectedFile, this.selectedFile.name)
     }
     if (!this.id) {
@@ -112,52 +113,81 @@ export class ProdutoComponent implements OnInit {
       .subscribe((response: Produto) => {
         if (response) {
           this.thumb = response.imagem
-          const stringData = response.data_validade;
+          console.log('data cadastro', response.data_cadastro)
+          const stringData = response.data_cadastro;
           const data = this.datePipe.transform(stringData, 'yyyy-MM-dd');
-          this.data_cadastro = response.data_cadastro
-          const stringDataCadastro = response.data_cadastro
-          this.dataValidade = stringDataCadastro ? new Date(stringDataCadastro + 'T00:00:00-03:00') : null;
 
-          const dataCadastro = this.datePipe.transform(stringDataCadastro, 'yyyy-MM-dd');
+          this.data_cadastro = this.formatarDataBr(response.data_cadastro)
 
           this.form.patchValue({ nome: response.nome })
           this.form.patchValue({ descricao: response.descricao })
           this.form.patchValue({ preco: response.preco })
-          if (data && dataCadastro) {
-            this.form.patchValue({ data_validade: new Date(data) })
+          this.form.patchValue({ data_validade: new Date(response.data_validade) })
+          if (this.data_cadastro) {
+            this.form.patchValue({ data_cadastro: this.data_cadastro })
           }
           else {
-            this.form.patchValue({ data_validade: null })
+            this.form.patchValue({ data_cadastro: null })
           }
         }
       })
   }
 
-  onUpdate(){
+  onUpdate() {
     const formData = new FormData()
     formData.append('nome', this.form.controls['nome'].value)
     formData.append('descricao', this.form.controls['descricao'].value)
     formData.append('preco', this.form.controls['preco'].value)
     formData.append('data_validade', this.form.controls['data_validade'].value)
     formData.append('data_cadastro', this.data_cadastro)
-    if(this.selectedFile?.name){
+    if (this.selectedFile?.name) {
       formData.append('imagem', this.selectedFile, this.selectedFile.name)
     }
-    
+
     this.service.updateProduto(this.id, formData)
-    .pipe(
-      map((data: any) => {
-        return {
-          mensagem: data.mensagem,
-          status: data.status
-        } as ProdutoResponse;
-      })
-    )
-    .subscribe((response: ProdutoResponse) => {
-      console.log('response', response)
-      if (response.status == 'sucesso') {
-        //this.form.reset()
-      }
-    });
+      .pipe(
+        map((data: any) => {
+          return {
+            mensagem: data.mensagem,
+            status: data.status
+          } as ProdutoResponse;
+        })
+      )
+      .subscribe((response: ProdutoResponse) => {
+        console.log('response', response)
+        if (response.status == 'sucesso') {
+          //this.form.reset()
+        }
+      });
+  }
+
+  formatarDataBr(dateString: string) {
+    let dataDoBanco = dateString;
+    let dataDoUsuario = new Date(dataDoBanco + 'T00:00:00');
+    let dataComFusoHorario = new Date(dataDoUsuario.getTime() + dataDoUsuario.getTimezoneOffset() * 60000);
+
+    const dia = dataComFusoHorario.getDate().toString().padStart(2, '0');
+    const mes = (dataComFusoHorario.getMonth() + 1).toString().padStart(2, '0');
+    const ano = dataComFusoHorario.getFullYear().toString();
+
+    return `${dia}/${mes}/${ano}`;
+
+    // const dataDoBanco = dateString
+    // let dataCadastro = moment.utc(dataDoBanco).local().toDate();
+    // return dataCadastro
+
+    // const date = new Date(dateString);
+    // const year = date.getFullYear();
+    // const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    // const day = date.getDate().toString().padStart(2, '0');
+    // return `${day}/${month}/${year}`;
+  }
+
+  formatarDataUSA(dateString: string) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}/${month}/${day}`;
   }
 }

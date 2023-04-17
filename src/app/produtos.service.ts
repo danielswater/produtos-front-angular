@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Produto } from './interface/produto.interface';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,10 @@ export class ProdutosService {
 
   constructor(private http: HttpClient) { }
 
-  getProdutos(){
-    return this.http.get(this.API+'produtos')
+  getProdutos(): Observable<Produto[]> {
+    return this.http.get<Produto[]>(this.API + 'produtos').pipe(
+      map(response => response)
+    );
   }
 
   postProdutos(produtos: any){

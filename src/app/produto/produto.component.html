@@ -25,13 +25,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="data_cadastro">Data de Validade</label>
-                    <input type="text" formControlName="data_validade" class="form-control" bsDatepicker>
+                    <label for="data_validade">Data de Validade</label>
+                    <input type="text" formControlName="data_validade"  class="form-control" bsDatepicker>
                 </div>
 
                 <div *ngIf="id" class="form-group">
                     <label for="data_cadastro">Data de Cadastro</label>
-                    <input readonly type="text" formControlName="data_cadastro"  [value]="dataValidade ? datePipe.transform(dataValidade, 'dd/MM/yyyy') : ''" class="form-control">
+                    <input readonly type="text" formControlName="data_cadastro"  class="form-control">
                 </div>
 
                 <div class="form-group">

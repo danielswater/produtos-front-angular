@@ -10,5 +10,6 @@ export interface Produto {
     preco: string;
     data_cadastro: string;
     data_validade: string;
+    dias_faltando?: string
     imagem: string;
 }
