@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProdutosService } from '../produtos.service';
 import { ProdutoResponse, Produto } from '../interface/produto.interface';
 
-import * as moment from 'moment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-novo-produto',
@@ -60,14 +60,8 @@ export class ProdutoComponent implements OnInit {
   }
 
   onSubmit() {
-
-    // const dataValidade = this.form.get('data_validade')?.value;
-    // const dataValidadeFormatada = format(dataValidade, 'yyyy-MM-dd');
-    // this.form.get('data_validade')?.setValue(dataValidadeFormatada);
-
     this.dataValidade = this.formatarDataUSA(this.form.controls['data_validade'].value)
-
-
+    console.log('this.dataValidade', this.dataValidade)
     const formData = new FormData()
     formData.append('nome', this.form.controls['nome'].value)
     formData.append('descricao', this.form.controls['descricao'].value)
@@ -89,6 +83,9 @@ export class ProdutoComponent implements OnInit {
         .subscribe((response: ProdutoResponse) => {
           console.log('response', response)
           if (response.status == 'sucesso') {
+            Swal.fire({
+              text: response.mensagem
+            })
             this.form.reset()
           }
         });
@@ -113,9 +110,6 @@ export class ProdutoComponent implements OnInit {
       .subscribe((response: Produto) => {
         if (response) {
           this.thumb = response.imagem
-          console.log('data cadastro', response.data_cadastro)
-          // const stringData = response.data_cadastro;
-          // const data = this.datePipe.transform(stringData, 'yyyy-MM-dd');
 
           this.data_cadastro = this.formatarDataBr(response.data_cadastro)
 
@@ -156,14 +150,14 @@ export class ProdutoComponent implements OnInit {
       .subscribe((response: ProdutoResponse) => {
         console.log('response', response)
         if (response.status == 'sucesso') {
-          //this.form.reset()
+          Swal.fire({
+            text: response.mensagem
+          })
         }
       });
   }
 
   formatarDataBr(dateString: string) {
-
-    console.log('dateString', dateString)
 
     if(dateString.includes('/')){
       let data = dateString.split('/').reverse()
@@ -186,6 +180,6 @@ export class ProdutoComponent implements OnInit {
     const ano = date.getFullYear();
     const mes = (date.getMonth() + 1).toString().padStart(2, '0');
     const dia = date.getDate().toString().padStart(2, '0');
-    return `${ano}/${mes}/${dia}`;
+    return `${ano}-${mes}-${dia}`;
   }
 }

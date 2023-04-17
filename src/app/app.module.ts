@@ -16,6 +16,7 @@ import { ProdutoComponent } from './produto/produto.component';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { RealBrDirective } from './diretiva/real-br.directive';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 
 defineLocale('pt-br', ptBrLocale); 
@@ -36,7 +37,8 @@ defineLocale('pt-br', ptBrLocale);
     AppRoutingModule,
     ReactiveFormsModule,
     TooltipModule.forRoot(),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    SweetAlert2Module.forRoot()
   ],
   providers: [DatePipe,ProdutosService],
   bootstrap: [AppComponent]
